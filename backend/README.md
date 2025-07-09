@@ -1,6 +1,36 @@
-# Image Upload Backend
+# Cloudinary Image Upload App - Backend (Node.js SDK)
 
-This is the backend service for the image upload application that handles image uploads to Cloudinary and stores metadata in MongoDB.
+This backend uses the **Cloudinary Node.js SDK** to handle image uploads, which is the proper way to use Cloudinary from a Node.js server environment.
+
+## 🚀 Setup Complete
+
+### Files Created:
+
+1. **`config/cloudinary.js`** - Cloudinary configuration with your credentials
+2. **`service/cloudinaryService.js`** - Service layer with all Cloudinary operations
+3. **`routes/imageRoutes.js`** - API endpoints for image operations
+4. **`test-cloudinary.js`** - Test file to verify Node.js SDK functionality
+5. **`server.js`** - Updated main server with new routes and middleware
+
+### Packages Installed:
+
+- `cloudinary` - Official Cloudinary Node.js SDK
+- `dotenv` - Environment variable management
+- `multer` - File upload middleware
+- `cors` - Cross-origin resource sharing
+
+## 🔧 IMPORTANT: Update Your Credentials
+
+You need to update your `.env` file with real Cloudinary credentials:
+
+```env
+# Replace these with your actual Cloudinary credentials from your dashboard
+CLOUDINARY_CLOUD_NAME=cloudimagev1
+CLOUDINARY_API_KEY=433649162333768
+CLOUDINARY_API_SECRET=your_actual_api_secret_here
+MONGODB_URI=mongodb://localhost:27017/imageupload
+PORT=5000
+```
 
 ## Features
 
