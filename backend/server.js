@@ -1,38 +1,37 @@
-const express = require("express");
+const app = require("./app");
 const mongoose = require("mongoose");
-const cors = require("cors");
-require("dotenv").config();
+const dotenv = require("dotenv");
+const http = require("http");
+const cloudinary = require("cloudinary").v2;
 
-// Import routes
-const imageRoutes = require("./routes/imageRoutes");
+dotenv.config({ path: "./config.env" });
 
-const app = express();
-const PORT = process.env.PORT || 5000;
+const user = process.env.USER_NAME;
+const password = process.env.PASSWORD;
 
-// Middleware
-app.use(cors()); // Enable CORS for frontend communication
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+const MONGODB_URI = `mongodb+srv://${user}:${password}@cluster0.mpuz2fw.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
+// set CLOUDINARY_URL=cloudinary://741484585886249:AMUWRp0f8tuun6shk0qMmQh62l4@cloudimagev1
+const CLOUDINARY_URL = `cloudinary://${process.env.api_key}:${process.env.api_secret}@${process.env.cloud_name}`;
+mongoose
+  .connect(MONGODB_URI)
+  .then(() => console.log("MongoDB connected"))
+  .catch((err) => console.error("MongoDB connection error:", err));
 
-// Routes
-app.use("/api/images", imageRoutes);
-
-// Basic route
-app.get("/", (req, res) => {
-  res.json({
-    message: "Backend server is running!",
-    port: PORT,
-    endpoints: {
-      "Upload Image": "POST /api/images/upload",
-      "Delete Image": "DELETE /api/images/delete/:publicId",
-      "Get Image Details": "GET /api/images/details/:publicId",
-      "Test Config": "GET /api/images/test-config",
-      "Sample Upload": "POST /api/images/upload-sample",
-    },
-  });
+cloudinary.config({
+  cloud_name: process.env.cloud_name,
+  api_key: process.env.api_key,
+  api_secret: process.env.api_secret,
+  secure: true,
 });
 
-// Start server
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+// Log the configuration
+// console.log(cloudinary.config());
+
+const port = process.env.PORT || 5000;
+
+// Create HTTP server
+const server = http.createServer(app);
+
+server.listen(port, () => {
+  console.log(`🚀 Server running on port ${port}`);
 });
